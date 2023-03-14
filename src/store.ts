@@ -16,20 +16,24 @@ export const state = proxy({
     rootDirHandle: null as FileSystemDirectoryHandle | null,
     _fileHandleCache: ref({} as { [key: string]: FileSystemFileHandle | FileSystemDirectoryHandle }),
     files: {} as { [key: string]: FSNode },
+
+    get selectedFile(): FSNode | null {
+        const id = state.selectedFilePath
+        return state.files[id] ?? null
+    },
+
+    async selectedFileContent(): Promise<string | null> {
+        const p = state.selectedFilePath
+        return p ? await fetchFileContentByPath(p) : null
+    }
 })
 
 // views
 export const derived = derive({
-    selectedFile: (get): FSNode | null => {
-        const id = get(state).selectedFilePath
-        return get(state).files[id] ?? null
-    },
     selectedFileContent: async (get): Promise<string | null> => {
         const p = get(state).selectedFilePath
         return p ? await fetchFileContentByPath(p) : null
     }
-}, {
-    sync: true
 })
 
 // async views

@@ -4,7 +4,8 @@ import {useSnapshot} from "valtio";
 import {derived, initApp, setSelectedFile, state} from "./store";
 
 function FileContents(): JSX.Element {
-    const {selectedFile, selectedFileContent} = useSnapshot(derived)
+    const {selectedFileContent} = useSnapshot(derived)
+    const {selectedFile} = useSnapshot(state)
     return <div className="fileContents"><h3>{selectedFile?.path}</h3>
         <pre>{selectedFileContent}</pre>
     </div>
@@ -18,13 +19,12 @@ const If: React.FunctionComponent<React.PropsWithChildren & {
 
 function App() {
     const store = useSnapshot(state)
-    const {selectedFile} = useSnapshot(derived)
 
     return (
         <div className="App">
             <h1>Oof Notes</h1>
             <p>Loading State: {store.loadingState}</p>
-            <p>{`Selected File: ${JSON.stringify(selectedFile)}`}</p>
+            <p>{`Selected File: ${JSON.stringify(store.selectedFile)}`}</p>
             <div className="row">
                 <div className="col fileTree">
                     <If true={store.rootDirHandle === null}>
