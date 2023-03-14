@@ -1,4 +1,4 @@
-import React, {Suspense} from 'react'
+import React, {ReactNode, Suspense} from 'react'
 import './App.css'
 import {useSnapshot} from "valtio";
 import {derived, initApp, setSelectedFile, state} from "./store";
@@ -11,11 +11,17 @@ function FileContents(): JSX.Element {
     </div>
 }
 
-const If: React.FunctionComponent<React.PropsWithChildren & {
-    true: boolean
+const Show: React.FunctionComponent<React.PropsWithChildren & {
+    when: boolean
 }> = (props) => {
-    return <>{props.true ? props.children : null}</>
+    return <>{props.when ? props.children : null}</>
 }
+
+const For = <T extends any>(props: { each: T[], children: (it: T) => ReactNode | undefined }) => <>
+    {props.each.map(it => {
+        return props.children(it)
+    })}
+</>;
 
 function App() {
     const store = useSnapshot(state)
@@ -27,16 +33,15 @@ function App() {
             <p>{`Selected File: ${JSON.stringify(store.selectedFile)}`}</p>
             <div className="row">
                 <div className="col fileTree">
-                    <If true={store.rootDirHandle === null}>
+                    <Show when={store.rootDirHandle === null}>
                         <button onClick={() => initApp()}>Open Files</button>
-                    </If>
+                    </Show>
                     <ul>
-                        {Object.keys(store.files).map(path => (
+                        <For each={Object.keys(store.files)}>{((path) => (
                             <li key={path}>
-                                <button
-                                    onClick={() => setSelectedFile(path)}>{path}</button>
-                            </li>
-                        ))}
+                                <button onClick={() => setSelectedFile(path)}>{path}</button>
+                            </li>))}
+                        </For>
                     </ul>
                 </div>
                 <div className="col">
