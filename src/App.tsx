@@ -1,22 +1,22 @@
-import React, {ReactNode, Suspense, SyntheticEvent, useState} from 'react'
+import React, {Suspense, useState} from 'react'
 import './App.css'
 import {useSnapshot} from "valtio";
-import {derived, DirNode, FSNode, initApp, setSelectedFile, state} from "./store";
+import {derived, DirNode, initApp, setSelectedFile, state} from "./state/store";
 import {
     ActionIcon,
-    AppShell, Box,
+    AppShell,
     Burger,
     Button,
-    Col, Group,
     Header,
-    List,
     MediaQuery,
-    Navbar, Stack,
-    Text, UnstyledButton, useMantineColorScheme,
+    Navbar,
+    Text,
+    useMantineColorScheme,
     useMantineTheme
 } from "@mantine/core";
 import {IconMoonStars, IconSun} from "@tabler/icons-react";
-import {JSONTree} from "react-json-tree";
+import {TreeNode} from "./widgets/TreeNode";
+import {If} from "./widgets/react-utils";
 
 function FileContents(): JSX.Element {
     const {selectedFileContent} = useSnapshot(derived)
@@ -24,48 +24,6 @@ function FileContents(): JSX.Element {
     return <div className="fileContents"><h3>{selectedFile?.path}</h3>
         <pre>{selectedFileContent}</pre>
     </div>
-}
-
-const If: React.FunctionComponent<React.PropsWithChildren & {
-    when: boolean
-}> = (props) => {
-    return <>{props.when ? props.children : null}</>
-}
-
-const For = <T extends any>(props: { each: T[], children: (it: T) => ReactNode | undefined }) => <>
-    {props.each.map(it => {
-        return props.children(it)
-    })}
-</>;
-
-type FileTreeNodeActions = { toggleExpanded: () => void }
-const TreeNode: React.FunctionComponent<{ root: FSNode, expanded?: boolean, onClick: (it: FSNode, actions: FileTreeNodeActions) => void, selectedPath: string }> = (props) => {
-    const {root, onClick, selectedPath} = props
-    const theme = useMantineTheme()
-    const [expanded, setExpanded] = useState(props.expanded ?? false)
-    const doClick = (ev: SyntheticEvent, n: FSNode) => {
-        ev.preventDefault()
-        ev.stopPropagation()
-        onClick(n, {toggleExpanded: () => setExpanded(!expanded)})
-    }
-    return (
-        <Box key={root.path}
-             style={{cursor: "pointer"}}
-             onClick={(e) => doClick(e, root)}>
-            <Stack style={{textDecoration: root.path === selectedPath ? "underline" : "none"}}>
-                {root.name}
-            </Stack>
-            <If when={root.kind === "directory" && expanded}>
-                <List listStyleType="none" withPadding style={{borderLeft: `2px solid ${theme.colors.gray[2]}`}}>
-                    <For each={(root as DirNode).children ?? []}>
-                        {it => <List.Item key={it.path}>
-                            <TreeNode root={it} onClick={onClick} selectedPath={selectedPath}/>
-                        </List.Item>}
-                    </For>
-                </List>
-            </If>
-        </Box>
-    )
 }
 
 function App() {
@@ -124,7 +82,7 @@ function App() {
                                       actions.toggleExpanded()
                                       setSelectedFile(n.path)
                                   }}
-                                  selectedPath={store.selectedFilePath}
+                                  selectedPaths={new Set([store.selectedFilePath])}
                         />
                     </If>
                 </div>

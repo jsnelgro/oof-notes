@@ -1,6 +1,6 @@
 // subscriptions
 
-import {readDir, resolveFiles} from "./utils";
+import {readDir, resolveFiles} from "./services/filesystem-service";
 import {proxy, ref} from "valtio";
 import {derive} from "valtio/utils";
 

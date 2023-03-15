@@ -23,5 +23,5 @@ pnpm run dev
 
 - [] choose a UI library. Thinking either [mantine](https://mantine.dev/pages/getting-started/)
   or [Chakra UI](https://chakra-ui.com/)
-    - mantine is wayyy more full featured. It's just weird that I haven't really heard anything about it... seems fishy.
+    - mantine is wayyy more full-featured. It's just weird that I haven't really heard anything about it... seems fishy.
       Like, maybe it has a weird license or something?
