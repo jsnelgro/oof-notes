@@ -1,51 +1,51 @@
-#root {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 2rem;
-    /*text-align: center;*/
-}
+/*#root {*/
+/*    max-width: 1280px;*/
+/*    margin: 0 auto;*/
+/*    padding: 2rem;*/
+/*    !*text-align: center;*!*/
+/*}*/
 
-.card {
-    padding: 2em;
-}
+/*.card {*/
+/*    padding: 2em;*/
+/*}*/
 
-.row {
-    display: flex;
-    flex-direction: row;
-}
+/*.row {*/
+/*    display: flex;*/
+/*    flex-direction: row;*/
+/*}*/
 
-.col {
-    display: flex;
-    flex-direction: column;
-    margin: 1em;
-}
+/*.col {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    margin: 1em;*/
+/*}*/
 
-.fileTree {
-    width: 25%;
-    min-width: 25vw;
-    overflow: scroll;
-    max-height: 50vh;
-    border: 1px solid white;
-}
+/*.fileTree {*/
+/*    width: 25%;*/
+/*    min-width: 25vw;*/
+/*    overflow: scroll;*/
+/*    max-height: 50vh;*/
+/*    border: 1px solid white;*/
+/*}*/
 
-.fileTree ul {
-    list-style: none;
-    padding: 2em 0;
-    margin: 0;
-}
+/*.fileTree ul {*/
+/*    list-style: none;*/
+/*    padding: 2em 0;*/
+/*    margin: 0;*/
+/*}*/
 
-.fileTree ul li {
-    margin-bottom: 1em;
-}
+/*.fileTree ul li {*/
+/*    margin-bottom: 1em;*/
+/*}*/
 
-.fileContents {
-    width: 50%;
-    min-width: 60vw;
-    border: 1px solid white;
-    padding: 2em;
-}
-.fileContents pre {
-    overflow: scroll;
-    white-space: pre-wrap;
-}
+/*.fileContents {*/
+/*    width: 50%;*/
+/*    min-width: 60vw;*/
+/*    border: 1px solid white;*/
+/*    padding: 2em;*/
+/*}*/
+/*.fileContents pre {*/
+/*    overflow: scroll;*/
+/*    white-space: pre-wrap;*/
+/*}*/
 
