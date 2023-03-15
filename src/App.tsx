@@ -15,7 +15,7 @@ import {
     useMantineTheme
 } from "@mantine/core";
 import {IconMoonStars, IconSun} from "@tabler/icons-react";
-import {Link, Outlet, useLoaderData} from "react-router-dom";
+import {NavLink, Outlet, useLoaderData} from "react-router-dom";
 import {rootLoader} from "./router";
 import {If} from "./widgets/react-utils";
 import {DirNode, initApp, setSelectedFile, state} from "./state/store";
@@ -44,7 +44,7 @@ function App() {
             >
                 <Navbar.Section><Text>Useful Stuff {routeData?.uuid}</Text></Navbar.Section>
                 <Navbar.Section>
-                    <Link to={`/files/today`}>Today</Link>
+                    <NavLink to={`/files/today`}>Today</NavLink>
                 </Navbar.Section>
                 <Navbar.Section grow component={ScrollArea} mt="lg">
                     <If when={store.rootDirHandle === null}>
@@ -63,7 +63,7 @@ function App() {
                 </Navbar.Section>
                 <Navbar.Section>
                     <Text>Some important fixed footer stuff here</Text>
-                    <Link to={`/settings`}>Settings</Link>
+                    <NavLink to={`/settings`}>Settings</NavLink>
                 </Navbar.Section>
 
             </Navbar>}
