@@ -8,13 +8,16 @@ import {
     MediaQuery,
     Navbar,
     Text,
+    Title,
     useMantineColorScheme,
     useMantineTheme
 } from "@mantine/core";
 import {IconMoonStars, IconSun} from "@tabler/icons-react";
-import {Link, Outlet} from "react-router-dom";
+import {Link, Outlet, useLoaderData} from "react-router-dom";
+import {rootLoader} from "./router";
 
 function App() {
+    const routeData = useLoaderData() as Awaited<ReturnType<typeof rootLoader>> | undefined
     const [opened, setOpened] = useState(false)
     const theme = useMantineTheme();
     const {colorScheme, toggleColorScheme} = useMantineColorScheme();
@@ -32,9 +35,9 @@ function App() {
                 hiddenBreakpoint="sm"
                 width={{sm: 200, lg: 300}}
             >
-                <Navbar.Section><Text>Put Useful Stuff Here</Text></Navbar.Section>
+                <Navbar.Section><Text>Useful Stuff {routeData?.uuid}</Text></Navbar.Section>
                 <Navbar.Section grow mt="md">
-                    <Link to={`files/today`}>Today</Link>
+                    <Link to={`/files/today`}>Today</Link>
                 </Navbar.Section>
                 <Navbar.Section>
                     <Text>Some important fixed footer stuff here</Text>
@@ -54,7 +57,8 @@ function App() {
                                 mr="xl"
                             />
                         </MediaQuery>
-                        <Text size="lg">Oof Notes</Text>
+                        <Title order={1}>Oof Notes</Title>
+                        {/* TODO: this should go on the settings page */}
                         <ActionIcon variant="default" onClick={() => toggleColorScheme()} size={30}>
                             {colorScheme === 'dark' ? <IconSun size="1rem"/> : <IconMoonStars size="1rem"/>}
                         </ActionIcon>
