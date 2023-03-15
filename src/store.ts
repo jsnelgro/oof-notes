@@ -4,10 +4,10 @@ import {readDir, resolveFiles} from "./utils";
 import {proxy, ref} from "valtio";
 import {derive} from "valtio/utils";
 
-type DirNode = { path: string, kind: "directory" }
-type FileNode = { path: string, kind: "file" }
-type FSNode = DirNode | FileNode
-type State = typeof state
+export type DirNode = { path: string, name: string, kind: "directory", children?: FSNode[] }
+export type FileNode = { path: string, name: string, kind: "file" }
+export type FSNode = DirNode | FileNode
+// type State = typeof state
 
 // model
 export const state = proxy({
@@ -15,6 +15,8 @@ export const state = proxy({
     selectedFilePath: "",
     rootDirHandle: null as FileSystemDirectoryHandle | null,
     _fileHandleCache: ref({} as { [key: string]: FileSystemFileHandle | FileSystemDirectoryHandle }),
+    // TODO: these need to stay in sync... not great. Should derive and memoize the files hashtable
+    filesAsTree: null as DirNode | null,
     files: {} as { [key: string]: FSNode },
 
     get selectedFile(): FSNode | null {
@@ -75,7 +77,6 @@ export const setSelectedFile = (path: string): void => {
     state.selectedFilePath = path
 }
 
-
 // async actions
 export const initApp = async () => {
     await setRootDirHandleAndPopulateFilenameCache()
@@ -87,21 +88,30 @@ const setRootDirHandleAndPopulateFilenameCache = async () => {
     state.loadingState = "DONE"
     state.rootDirHandle = rootDir
     state._fileHandleCache[rootDir.name] = rootDir
-    const resolveRecurse = async (fPath: string, f: FileSystemDirectoryHandle) => {
+    const resolveRecurse = async (fPath: string, f: FileSystemDirectoryHandle, parent: DirNode): Promise<FSNode> => {
         const childs = await resolveFiles(f)
-        for (const it of childs) {
-            const p = fPath + "/" + it.name
-            state.files[p] = {path: p, kind: it.kind} as FSNode
+        const childRefs: FSNode[] = await Promise.all(childs.map(async it => {
+            const c = {path: fPath + "/" + it.name, name: it.name, kind: it.kind} as FSNode
             if (it instanceof FileSystemDirectoryHandle || it instanceof FileSystemFileHandle) {
-                state._fileHandleCache[p] = it
+                state.files[c.path] = c
+                state._fileHandleCache[c.path] = it
             }
+
             if (it instanceof FileSystemDirectoryHandle) {
-                await resolveRecurse(p, it)
+                return await resolveRecurse(c.path, it, c as DirNode)
+            } else {
+                return c
             }
-        }
+        }))
+        return {...parent, children: childRefs }
     }
 
-    await resolveRecurse(rootDir.name, rootDir)
+    state.filesAsTree = await resolveRecurse(rootDir.name, rootDir, {
+        path: rootDir.name,
+        name: rootDir.name,
+        kind: rootDir.kind,
+        children: []
+    }) as DirNode
 }
 
 // @ts-ignore
