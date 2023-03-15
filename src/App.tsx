@@ -1,12 +1,9 @@
-import React, {Suspense, useState} from 'react'
+import React, {useState} from 'react'
 import './App.css'
-import {useSnapshot} from "valtio";
-import {derived, DirNode, initApp, setSelectedFile, state} from "./state/store";
 import {
     ActionIcon,
     AppShell,
     Burger,
-    Button,
     Header,
     MediaQuery,
     Navbar,
@@ -15,19 +12,9 @@ import {
     useMantineTheme
 } from "@mantine/core";
 import {IconMoonStars, IconSun} from "@tabler/icons-react";
-import {TreeNode} from "./widgets/TreeNode";
-import {If} from "./widgets/react-utils";
-
-function FileContents(): JSX.Element {
-    const {selectedFileContent} = useSnapshot(derived)
-    const {selectedFile} = useSnapshot(state)
-    return <div className="fileContents"><h3>{selectedFile?.path}</h3>
-        <pre>{selectedFileContent}</pre>
-    </div>
-}
+import {Link, Outlet} from "react-router-dom";
 
 function App() {
-    const store = useSnapshot(state)
     const [opened, setOpened] = useState(false)
     const theme = useMantineTheme();
     const {colorScheme, toggleColorScheme} = useMantineColorScheme();
@@ -45,7 +32,15 @@ function App() {
                 hiddenBreakpoint="sm"
                 width={{sm: 200, lg: 300}}
             >
-                <Text>Application navbar</Text>
+                <Navbar.Section><Text>Put Useful Stuff Here</Text></Navbar.Section>
+                <Navbar.Section grow mt="md">
+                    <Link to={`files/today`}>Today</Link>
+                </Navbar.Section>
+                <Navbar.Section>
+                    <Text>Some important fixed footer stuff here</Text>
+                    <Link to={`/settings`}>Settings</Link>
+                </Navbar.Section>
+
             </Navbar>}
             header={
                 <Header height={{base: 50, md: 70}} p="md">
@@ -67,31 +62,7 @@ function App() {
                 </Header>
             }
         >
-            <Text>Loading State: {store.loadingState}</Text>
-            <Text>{`Selected File: ${JSON.stringify(store.selectedFile)}`}</Text>
-            <div>
-                <div>
-                    <If when={store.rootDirHandle === null}>
-                        <Button onClick={() => initApp()}>Open Files</Button>
-                    </If>
-                    <If when={!!store.filesAsTree}>
-                        {/*<JSONTree data={store} />*/}
-                        <TreeNode root={store.filesAsTree as DirNode}
-                                  expanded={true}
-                                  onClick={(n, actions) => {
-                                      actions.toggleExpanded()
-                                      setSelectedFile(n.path)
-                                  }}
-                                  selectedPaths={new Set([store.selectedFilePath])}
-                        />
-                    </If>
-                </div>
-                <div>
-                    <Suspense fallback={"loading..."}>
-                        <FileContents/>
-                    </Suspense>
-                </div>
-            </div>
+            <Outlet/>
         </AppShell>
     )
 }
