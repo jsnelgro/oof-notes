@@ -5,6 +5,7 @@ import App from "./App";
 import ErrorPage from "./pages/ErrorPage";
 import SingleFilePage, {submitAction} from "./pages/SingleFilePage";
 import {uuid, wait} from "./state/services/utils";
+import {SettingsPage} from "./pages/Settings";
 
 export async function rootLoader() {
     // TODO: do all my initial async loading stuff can go here.
@@ -33,6 +34,10 @@ export const router = createHashRouter([
                     return {filepath: args.params.filepath}
                 },
                 action: submitAction,
+            },
+            {
+                path: "/settings",
+                element: <SettingsPage/>,
             },
             // TODO: lookup how to do redirects in react router
             //  need to redirect to an InitPage if state is not ready for
