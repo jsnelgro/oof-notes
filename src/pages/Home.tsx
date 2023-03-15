@@ -10,6 +10,7 @@ export function FileContents(): JSX.Element {
         <Title variant="gradient"
                gradient={{from: 'indigo', to: 'cyan', deg: 45}}
                w={"fit-content"}
+               style={{overflowWrap: "break-word"}}
                order={2}
         >
             {selectedFile?.path}

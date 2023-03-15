@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
 import './App.css'
 import {
-    ActionIcon,
     AppShell,
     Burger,
     Button,
@@ -9,12 +8,11 @@ import {
     MediaQuery,
     Navbar,
     ScrollArea,
+    Stack,
     Text,
     Title,
-    useMantineColorScheme,
     useMantineTheme
 } from "@mantine/core";
-import {IconMoonStars, IconSun} from "@tabler/icons-react";
 import {NavLink, Outlet, useLoaderData} from "react-router-dom";
 import {rootLoader} from "./router";
 import {If} from "./widgets/react-utils";
@@ -26,7 +24,6 @@ function App() {
     const routeData = useLoaderData() as Awaited<ReturnType<typeof rootLoader>> | undefined
     const [opened, setOpened] = useState(false)
     const theme = useMantineTheme();
-    const {colorScheme, toggleColorScheme} = useMantineColorScheme();
     const store = useSnapshot(state)
 
     return (
@@ -38,13 +35,17 @@ function App() {
                 },
             }}
             navbar={<Navbar
+                hidden={!opened}
                 p="md"
                 hiddenBreakpoint="sm"
                 width={{sm: 200, lg: 300}}
             >
                 <Navbar.Section><Text>Useful Stuff {routeData?.uuid}</Text></Navbar.Section>
                 <Navbar.Section>
-                    <NavLink to={`/files/today`}>Today</NavLink>
+                    <Stack>
+                        <NavLink to={`/`}><Text>Home</Text></NavLink>
+                        <NavLink to={`/files/today`}><Text>Today</Text></NavLink>
+                    </Stack>
                 </Navbar.Section>
                 <Navbar.Section grow component={ScrollArea} mt="lg">
                     <If when={store.rootDirHandle === null}>
@@ -56,6 +57,7 @@ function App() {
                                   onClick={(n, actions) => {
                                       actions.toggleExpanded()
                                       setSelectedFile(n.path)
+                                      setOpened(false)
                                   }}
                                   selectedPaths={new Set([store.selectedFilePath])}
                         />
@@ -79,11 +81,7 @@ function App() {
                                 mr="xl"
                             />
                         </MediaQuery>
-                        <Title order={1}>Oof Notes</Title>
-                        {/* TODO: this should go on the settings page */}
-                        <ActionIcon variant="default" onClick={() => toggleColorScheme()} size={30}>
-                            {colorScheme === 'dark' ? <IconSun size="1rem"/> : <IconMoonStars size="1rem"/>}
-                        </ActionIcon>
+                        <Title order={1}>Oof</Title>
                     </div>
                 </Header>
             }
