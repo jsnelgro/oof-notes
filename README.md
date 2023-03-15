@@ -19,9 +19,16 @@ pnpm install
 pnpm run dev
 ```
 
+# Tests
+
+```sh
+pnpm test
+```
+
 # TODO
 
-- [] choose a UI library. Thinking either [mantine](https://mantine.dev/pages/getting-started/)
-  or [Chakra UI](https://chakra-ui.com/)
-    - mantine is wayyy more full-featured. It's just weird that I haven't really heard anything about it... seems fishy.
-      Like, maybe it has a weird license or something?
+- [ ] 7-day view
+- [ ] redirect to init page if FS store is not set
+- [ ] markdown renderer
+- [ ] user prefs store (maybe good op to add persistence)
+- [ ] text editor... yikes

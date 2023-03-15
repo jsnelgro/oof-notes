@@ -4,9 +4,11 @@ import {
     ActionIcon,
     AppShell,
     Burger,
+    Button,
     Header,
     MediaQuery,
     Navbar,
+    ScrollArea,
     Text,
     Title,
     useMantineColorScheme,
@@ -15,12 +17,17 @@ import {
 import {IconMoonStars, IconSun} from "@tabler/icons-react";
 import {Link, Outlet, useLoaderData} from "react-router-dom";
 import {rootLoader} from "./router";
+import {If} from "./widgets/react-utils";
+import {DirNode, initApp, setSelectedFile, state} from "./state/store";
+import {TreeNode} from "./widgets/TreeNode";
+import {useSnapshot} from "valtio";
 
 function App() {
     const routeData = useLoaderData() as Awaited<ReturnType<typeof rootLoader>> | undefined
     const [opened, setOpened] = useState(false)
     const theme = useMantineTheme();
     const {colorScheme, toggleColorScheme} = useMantineColorScheme();
+    const store = useSnapshot(state)
 
     return (
         <AppShell
@@ -36,8 +43,23 @@ function App() {
                 width={{sm: 200, lg: 300}}
             >
                 <Navbar.Section><Text>Useful Stuff {routeData?.uuid}</Text></Navbar.Section>
-                <Navbar.Section grow mt="md">
+                <Navbar.Section>
                     <Link to={`/files/today`}>Today</Link>
+                </Navbar.Section>
+                <Navbar.Section grow component={ScrollArea} mt="lg">
+                    <If when={store.rootDirHandle === null}>
+                        <Button onClick={() => initApp()}>Open Files</Button>
+                    </If>
+                    <If when={!!store.filesAsTree}>
+                        <TreeNode root={store.filesAsTree as DirNode}
+                                  expanded={true}
+                                  onClick={(n, actions) => {
+                                      actions.toggleExpanded()
+                                      setSelectedFile(n.path)
+                                  }}
+                                  selectedPaths={new Set([store.selectedFilePath])}
+                        />
+                    </If>
                 </Navbar.Section>
                 <Navbar.Section>
                     <Text>Some important fixed footer stuff here</Text>
