@@ -1,5 +1,5 @@
 import React, {SyntheticEvent, useState} from "react";
-import {DirNode, FSNode} from "../state/store";
+import {DirNode, FSNode} from "../state/fileStore";
 import {Box, List, Stack, useMantineTheme} from "@mantine/core";
 import {For, If} from "./react-utils";
 

@@ -32,8 +32,12 @@ export async function overwriteFile(fileHandle: FileSystemFileHandle, contents: 
     return fileHandle;
 }
 
-export async function readDir(): Promise<FileSystemDirectoryHandle> {
-    return await window.showDirectoryPicker();
+export async function pickRootDirHandle(
+    mode: "read" | "readwrite" = "readwrite",
+    // passing undefined will open the last used directory
+    startIn?: "desktop" | "documents" | "downloads" | "music" | "pictures" | "videos",
+): Promise<FileSystemDirectoryHandle> {
+    return await window.showDirectoryPicker({mode, startIn, id: startIn});
 }
 
 export async function resolveFiles(handle?: FileSystemDirectoryHandle): Promise<FileSystemHandle[]> {

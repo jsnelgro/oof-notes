@@ -16,7 +16,7 @@ import {
 import {NavLink, Outlet, useLoaderData} from "react-router-dom";
 import {rootLoader} from "./router";
 import {If} from "./widgets/react-utils";
-import {DirNode, initApp, setSelectedFile, state} from "./state/store";
+import {DirNode, init, setSelectedFile, fileStore} from "./state/fileStore";
 import {TreeNode} from "./widgets/TreeNode";
 import {useSnapshot} from "valtio";
 
@@ -24,7 +24,7 @@ function App() {
     const routeData = useLoaderData() as Awaited<ReturnType<typeof rootLoader>> | undefined
     const [opened, setOpened] = useState(false)
     const theme = useMantineTheme();
-    const store = useSnapshot(state)
+    const store = useSnapshot(fileStore)
 
     return (
         <AppShell
@@ -45,11 +45,12 @@ function App() {
                     <Stack>
                         <NavLink to={`/`}><Text>Home</Text></NavLink>
                         <NavLink to={`/files/today`}><Text>Today</Text></NavLink>
+                        <NavLink to={`/memory`}><Text>Memory</Text></NavLink>
                     </Stack>
                 </Navbar.Section>
                 <Navbar.Section grow component={ScrollArea} mt="lg">
                     <If when={store.rootDirHandle === null}>
-                        <Button onClick={() => initApp()}>Open Files</Button>
+                        <Button onClick={() => init()}>Open Files</Button>
                     </If>
                     <If when={!!store.filesAsTree}>
                         <TreeNode root={store.filesAsTree as DirNode}

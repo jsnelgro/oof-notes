@@ -6,6 +6,7 @@ import ErrorPage from "./pages/ErrorPage";
 import SingleFilePage, {submitAction} from "./pages/SingleFilePage";
 import {uuid, wait} from "./state/services/utils";
 import {SettingsPage} from "./pages/Settings";
+import {MemoryPage} from "./pages/MemoryPage";
 
 export async function rootLoader() {
     // TODO: do all my initial async loading stuff can go here.
@@ -26,6 +27,10 @@ export const router = createHashRouter([
             {
                 path: "/",
                 element: <HomePage/>,
+            },
+            {
+                path: "/memory",
+                element: <MemoryPage/>
             },
             {
                 path: "/files/:filepath",
