@@ -2,7 +2,7 @@ import React from "react";
 import {ActionIcon, Container, createStyles, Input, Text, Title, useMantineColorScheme} from "@mantine/core";
 import {IconMoonStars, IconSun} from "@tabler/icons-react";
 import {useSnapshot} from "valtio";
-import settings from "../state/settings";
+import settings from "../state/settingsStore";
 import {bind} from "../widgets/react-utils";
 
 // NOTE: I don't love it but this is how you style things... really miss Vue's simple scoped style tag

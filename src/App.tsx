@@ -16,9 +16,9 @@ import {
 import {NavLink, Outlet, useLoaderData} from "react-router-dom";
 import {rootLoader} from "./router";
 import {If} from "./widgets/react-utils";
-import {DirNode, initApp, setSelectedFile, state} from "./state/store";
 import {TreeNode} from "./widgets/TreeNode";
 import {useSnapshot} from "valtio";
+import {DirNode, state} from "./state/fileStore";
 
 function App() {
     const routeData = useLoaderData() as Awaited<ReturnType<typeof rootLoader>> | undefined
@@ -49,14 +49,14 @@ function App() {
                 </Navbar.Section>
                 <Navbar.Section grow component={ScrollArea} mt="lg">
                     <If when={store.rootDirHandle === null}>
-                        <Button onClick={() => initApp()}>Open Files</Button>
+                        <Button onClick={() => state.init()}>Open Files</Button>
                     </If>
                     <If when={!!store.filesAsTree}>
                         <TreeNode root={store.filesAsTree as DirNode}
                                   expanded={true}
                                   onClick={(n, actions) => {
                                       actions.toggleExpanded()
-                                      setSelectedFile(n.path)
+                                      state.setSelectedFile(n.path)
                                       setOpened(false)
                                   }}
                                   selectedPaths={new Set([store.selectedFilePath])}

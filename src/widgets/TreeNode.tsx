@@ -1,7 +1,7 @@
 import React, {SyntheticEvent, useState} from "react";
-import {DirNode, FSNode} from "../state/store";
 import {Box, List, Stack, useMantineTheme} from "@mantine/core";
 import {For, If} from "./react-utils";
+import {DirNode, FSNode} from "../state/fileStore";
 
 type FileTreeNodeActions = { toggleExpanded: () => void }
 export const TreeNode: React.FunctionComponent<{ root: FSNode, expanded?: boolean, onClick: (it: FSNode, actions: FileTreeNodeActions) => void, selectedPaths: Set<string> }> = (props) => {

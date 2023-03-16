@@ -1,11 +1,11 @@
 import React, {PropsWithChildren, Suspense} from 'react'
 import {Box, Container, Text, Title} from "@mantine/core";
-import {derived, state} from "../state/store";
 import {useSnapshot} from "valtio";
+import {state} from "../state/fileStore";
 
 export function FileContents(): JSX.Element {
-    const {selectedFileContent} = useSnapshot(derived)
-    const {selectedFile} = useSnapshot(state)
+    // const {selectedFileContent} = useSnapshot(state.derived)
+    const {selectedFile, derived} = useSnapshot(state)
     return <Box>
         <Title variant="gradient"
                gradient={{from: 'indigo', to: 'cyan', deg: 45}}
@@ -15,7 +15,7 @@ export function FileContents(): JSX.Element {
         >
             {selectedFile?.path}
         </Title>
-        <Text style={{whiteSpace: "pre-wrap"}} size="lg">{selectedFileContent}</Text>
+        <Text style={{whiteSpace: "pre-wrap"}} size="lg">{derived.selectedFileContent}</Text>
     </Box>
 }
 
