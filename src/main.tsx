@@ -9,6 +9,8 @@ import {router} from "./router";
 const Main = () => {
     // TODO: add event listener to listen for dark mode change.
     //  Should probably make a service that exposes dark mode + listener
+    // actually useColorScheme should work dynamically... hmm...
+    // docs: https://mantine.dev/hooks/use-color-scheme/#usage
     const colorSchemeMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light"
     const preferredColorScheme = useColorScheme(colorSchemeMode);
     const [colorScheme, setColorScheme] = useState<ColorScheme>(preferredColorScheme);
