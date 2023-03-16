@@ -6,9 +6,9 @@ export const If: React.FunctionComponent<React.PropsWithChildren & {
     return <>{props.when ? props.children : null}</>
 }
 
-export const For = <T extends any>(props: { each: T[], children: (it: T) => ReactNode | undefined }) => <>
-    {props.each.map(it => {
-        return props.children(it)
+export const For = <T extends any>(props: { each: T[], children: (it: T, i: number) => ReactNode | undefined }) => <>
+    {props.each.map((it, i) => {
+        return props.children(it, i)
     })}
 </>;
 

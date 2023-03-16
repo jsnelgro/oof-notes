@@ -4,6 +4,7 @@ import {
     AppShell,
     Burger,
     Button,
+    Divider,
     Header,
     MediaQuery,
     Navbar,
@@ -16,7 +17,7 @@ import {
 import {NavLink, Outlet, useLoaderData} from "react-router-dom";
 import {rootLoader} from "./router";
 import {If} from "./widgets/react-utils";
-import {DirNode, init, setSelectedFile, fileStore} from "./state/fileStore";
+import {DirNode, fileStore, init, setSelectedFile} from "./state/fileStore";
 import {TreeNode} from "./widgets/TreeNode";
 import {useSnapshot} from "valtio";
 
@@ -40,14 +41,15 @@ function App() {
                 hiddenBreakpoint="sm"
                 width={{sm: 200, lg: 300}}
             >
-                <Navbar.Section><Text>Useful Stuff {routeData?.uuid}</Text></Navbar.Section>
                 <Navbar.Section>
                     <Stack>
                         <NavLink to={`/`}><Text>Home</Text></NavLink>
                         <NavLink to={`/files/today`}><Text>Today</Text></NavLink>
                         <NavLink to={`/memory`}><Text>Memory</Text></NavLink>
                     </Stack>
+
                 </Navbar.Section>
+                <Divider my={"md"}/>
                 <Navbar.Section grow component={ScrollArea} mt="lg">
                     <If when={store.rootDirHandle === null}>
                         <Button onClick={() => init()}>Open Files</Button>
@@ -64,8 +66,8 @@ function App() {
                         />
                     </If>
                 </Navbar.Section>
+                <Divider my={"md"}/>
                 <Navbar.Section>
-                    <Text>Some important fixed footer stuff here</Text>
                     <NavLink to={`/settings`}>Settings</NavLink>
                 </Navbar.Section>
 

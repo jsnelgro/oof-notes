@@ -1,8 +1,18 @@
 import React from "react";
-import {ActionIcon, Container, createStyles, Input, Text, Title, useMantineColorScheme} from "@mantine/core";
+import {
+    ActionIcon,
+    Container,
+    createStyles,
+    Input,
+    NumberInput,
+    Text,
+    Title,
+    useMantineColorScheme
+} from "@mantine/core";
 import {IconMoonStars, IconSun} from "@tabler/icons-react";
 import {useSnapshot} from "valtio";
 import * as SettingsStore from "../state/settingsStore";
+import {settingsStore} from "../state/settingsStore";
 import {bind} from "../widgets/react-utils";
 
 // NOTE: I don't love it but this is how you style things... really miss Vue's simple scoped style tag
@@ -33,6 +43,9 @@ export function SettingsPage() {
             <Title order={1}>Settings</Title>
             <Text>TODO: make a <i className="my-eye">settings page...</i></Text>
             <Input {...bind(s.chronoNotesDirectory, SettingsStore.setChronoNotesDirectory)} />
+            <NumberInput type="number"
+                   value={settingsStore.rollingViewLookbackDays}
+                   onChange={v => (settingsStore.rollingViewLookbackDays = v as number)}/>
             <ActionIcon variant="default" onClick={() => toggleColorScheme()} size={30}>
                 {colorScheme === 'dark' ? <IconSun size="1rem"/> : <IconMoonStars size="1rem"/>}
             </ActionIcon>
