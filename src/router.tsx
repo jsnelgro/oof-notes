@@ -4,7 +4,7 @@ import {HomePage} from "./pages/Home";
 import App from "./App";
 import ErrorPage from "./pages/ErrorPage";
 import SingleFilePage, {submitAction} from "./pages/SingleFilePage";
-import {uuid, wait} from "./state/services/utils";
+import {uuid, wait} from "./utils";
 import {SettingsPage} from "./pages/Settings";
 import {MemoryPage} from "./pages/MemoryPage";
 

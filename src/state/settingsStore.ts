@@ -4,10 +4,11 @@ type ColorSchemeModes = "dark" | "light" | "auto"
 
 export const settingsStore = proxy({
     colorSchemeMode: "auto" as ColorSchemeModes,
-    chronoNotesDirectory: "notes/tst_dailies",
+    chronoNotesDirectory: "",
     // TODO: stupid noteplan format...
-    dailyNotePattern: /\d\d\d\d\d\d\d\d\.md/gm,
-    rollingViewLookbackDays: 14,
+    dailyNotePattern: /\d\d\d\d\d\d\d\d/gm,
+    fileType: "md",
+    rollingViewLookbackDays: 7,
 })
 
 export const setChronoNotesDirectory = (nxt: string) => {

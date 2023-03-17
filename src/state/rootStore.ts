@@ -1,35 +1,54 @@
 import {fetchFileContentByPath, FileNode, fileStore} from "./fileStore";
 import {settingsStore} from "./settingsStore";
 import {proxy} from "valtio";
-import dayjs from "dayjs";
+import dayjs, {Dayjs} from "dayjs";
+import {toPath} from "../utils";
+import {sortBy} from "remeda";
 
+// TODO: how do I enforce this type on sub-stores while keeping the specificity of the store types?
+interface StateModule {
+    init(): any
+
+    persist(): any
+}
+
+type ContentfulNode = FileNode & { content: string }
+type ContentfulChronoNode = ContentfulNode & { date: Dayjs }
 export const rootStore = proxy({
-    fileStore,
-    settingsStore,
+    stores: {
+        fileStore,
+        settingsStore,
+    },
     get recentChronoNotes(): FileNode[] {
         const today = dayjs(new Date())
         return Object.entries(fileStore.files)
             .filter(it => {
-                const fileMatches = !!it[1].name.match(settingsStore.dailyNotePattern)
-                const dirMatches = it[0].startsWith(settingsStore.chronoNotesDirectory)
-                return dirMatches && fileMatches && it[1].kind === "file"
+                let filePath = toPath(it[0])
+                // check for .icloud extension, which means the files exist but are not loaded locally yet
+                const fileTypeMatches = filePath.extension === "icloud" ? toPath(filePath.filename).extension === settingsStore.fileType : filePath.extension === settingsStore.fileType
+                const fileMatches = !!filePath.filename.match(settingsStore.dailyNotePattern)
+
+                // TODO: should probs just refactor fileStore and strip the root dir from all paths
+                const targetDir = toPath(settingsStore.chronoNotesDirectory).components.slice(1)
+                const fileDir = filePath.components.slice(1)
+                const dirMatches = fileDir.join("/").startsWith(targetDir.join("/"))
+                return dirMatches && fileMatches && fileTypeMatches && it[1].kind === "file"
             })
-            .filter(([, it]) => {
-                // TODO: do more robust parsing. This just works stupid noteplan format...
-                const yyyy = it.name.slice(0, 4)
-                const mm = it.name.slice(4, 6)
-                const dd = it.name.slice(6, 8)
-                const d = dayjs(`${yyyy}-${mm}-${dd}`)
-                // const diff = d.diff(today, "days")
-                // console.log(diff)
+            .filter(([path, _]) => {
+                const p = toPath(path)
+                const d = dayjs(p.filename)
                 return d.isAfter(today.subtract(settingsStore.rollingViewLookbackDays, "day"))
             })
             .map(it => it[1] as FileNode)
     },
-    async recentChronoNotesContent(): Promise<string[]> {
-        return Promise.all(rootStore.recentChronoNotes.map(async it => {
-            return await fetchFileContentByPath(it.path) ?? ""
+    async recentChronoNotesWithContent(): Promise<ContentfulChronoNode[]> {
+        const res = await Promise.all(rootStore.recentChronoNotes.map(async it => {
+            const content = await fetchFileContentByPath(it.path) ?? ""
+            const date = dayjs(toPath(it.path).filename)
+            return {...it, content, date}
         }))
+
+        return sortBy(res.filter(it => it.content !== ""), (it) => it.date)
 
     }
 })

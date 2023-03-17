@@ -33,6 +33,7 @@
     "react-router-dom": "^6.9.0",
     "react-use": "^17.4.0",
     "remark-gfm": "^3.0.1",
+    "remeda": "^1.9.0",
     "valtio": "^1.10.3"
   },
   "devDependencies": {

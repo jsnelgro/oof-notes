@@ -1,7 +1,7 @@
 import React from "react";
 import {Center, Container, Group, Stack, Text, Title} from "@mantine/core";
 import {ActionFunction, Form, redirect, useLoaderData} from "react-router-dom";
-import {wait} from "../state/services/utils";
+import {wait} from "../utils";
 
 // TODO: rm me. This is just an example of how to use react router's Form stuff... it's... ok.
 export const submitAction: ActionFunction = async (args) => {
