@@ -5,12 +5,12 @@ import {
     Burger,
     Button,
     Divider,
+    Group,
     Header,
     MediaQuery,
     Navbar,
+    NavLink as UINavLink,
     ScrollArea,
-    Stack,
-    Text,
     Title,
     useMantineTheme
 } from "@mantine/core";
@@ -20,6 +20,7 @@ import {If} from "./widgets/react-utils";
 import {DirNode, fileStore, init, setSelectedFile} from "./state/fileStore";
 import {TreeNode} from "./widgets/TreeNode";
 import {useSnapshot} from "valtio";
+import {IconBrain, IconClock, IconHome, IconSettings} from "@tabler/icons-react";
 
 function App() {
     const routeData = useLoaderData() as Awaited<ReturnType<typeof rootLoader>> | undefined
@@ -37,43 +38,57 @@ function App() {
             }}
             navbar={<Navbar
                 hidden={!opened}
+                // HACK: there's some bug with the layout where their calc doesn't work, so this copies it and puts a -1px
+                //  wich magically aligns it again...
+                sx={{height: "calc(100vh - var(--mantine-header-height, 0rem) - var(--mantine-footer-height, 0rem)) - 1px"}}
                 p="md"
                 hiddenBreakpoint="sm"
-                width={{sm: 200, lg: 300}}
+                width={{base: 200, sm: 200, lg: 300}}
             >
-                <Navbar.Section>
-                    <Stack>
-                        <NavLink to={`/`}><Text>Home</Text></NavLink>
-                        <NavLink to={`/files/today`}><Text>Today</Text></NavLink>
-                        <NavLink to={`/memory`}><Text>Memory</Text></NavLink>
-                    </Stack>
-
+                <Navbar.Section mt="xs">
+                    <Group>
+                        <UINavLink label="Home" to="/" component={NavLink}
+                                   icon={<IconHome/>}
+                                   onClick={() => setOpened(false)}></UINavLink>
+                        <UINavLink label="Today" to={`/files/${"TODO"}`} component={NavLink}
+                                   icon={<IconClock/>}
+                                   onClick={() => setOpened(false)}></UINavLink>
+                        <UINavLink label="Memory" to="/memory" component={NavLink}
+                                   icon={<IconBrain/>}
+                                   onClick={() => setOpened(false)}></UINavLink>
+                    </Group>
+                    <Divider/>
                 </Navbar.Section>
-                <Divider my={"md"}/>
-                <Navbar.Section grow component={ScrollArea} mt="lg">
-                    <If when={store.rootDirHandle === null}>
-                        <Button onClick={() => init()}>Open Files</Button>
-                    </If>
-                    <If when={!!store.filesAsTree}>
-                        <TreeNode root={store.filesAsTree as DirNode}
-                                  expanded={true}
-                                  onClick={(n, actions) => {
-                                      actions.toggleExpanded()
-                                      setSelectedFile(n.path)
-                                      setOpened(false)
-                                  }}
-                                  selectedPaths={new Set([store.selectedFilePath])}
-                        />
-                    </If>
+                <Navbar.Section grow component={ScrollArea} mx={"-xs"} px={"xs"}>
+                    <Group py="md">
+                        <If when={store.rootDirHandle === null}>
+                            <Button onClick={() => init()}>Open Files</Button>
+                        </If>
+                        <If when={!!store.filesAsTree}>
+                            <TreeNode root={store.filesAsTree as DirNode}
+                                      expanded={true}
+                                      onClick={(n, actions) => {
+                                          actions.toggleExpanded()
+                                          setSelectedFile(n.path)
+                                          n.kind === "file" && setOpened(false)
+                                      }}
+                                      selectedPaths={new Set([store.selectedFilePath])}
+                            />
+                        </If>
+                    </Group>
                 </Navbar.Section>
-                <Divider my={"md"}/>
                 <Navbar.Section>
-                    <NavLink to={`/settings`}>Settings</NavLink>
+                    <Divider/>
+                    <Group position={"apart"}>
+                        <UINavLink label="Settings" to="/settings" component={NavLink}
+                                   icon={<IconSettings/>}
+                                   onClick={() => setOpened(false)}></UINavLink>
+                    </Group>
                 </Navbar.Section>
 
             </Navbar>}
             header={
-                <Header height={{base: 50, md: 70}} p="md">
+                <Header height={{base: 50, md: 50}} p="md">
                     <div style={{display: 'flex', alignItems: 'center', height: '100%'}}>
                         <MediaQuery largerThan="sm" styles={{display: 'none'}}>
                             <Burger
@@ -84,10 +99,15 @@ function App() {
                                 mr="xl"
                             />
                         </MediaQuery>
-                        <Title order={1}>Oof</Title>
+                        <Title order={1} align={"center"}>Oof</Title>
                     </div>
                 </Header>
             }
+            // footer={
+            //     <Footer height={20}>
+            //         <Box>Footer</Box>
+            //     </Footer>
+            // }
         >
             <Outlet/>
         </AppShell>

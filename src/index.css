@@ -2,6 +2,11 @@ a.active {
     font-weight: bold;
 }
 
+* {
+    /* disable zooming in ios so it feels more like an app */
+    touch-action: pan-y;
+}
+
 /*:root {*/
 /*  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;*/
 /*  line-height: 1.5;*/
