@@ -7,6 +7,7 @@ export function FileContents(): JSX.Element {
     const {selectedFileContent} = useSnapshot(derived)
     const {selectedFile} = useSnapshot(fileStore)
     return <Box>
+        <Title>TODO: this page doesn't do much anymore... just remove it? Or transform it into a "todos" view</Title>
         <Title variant="gradient"
                gradient={{from: 'indigo', to: 'cyan', deg: 45}}
                w={"fit-content"}

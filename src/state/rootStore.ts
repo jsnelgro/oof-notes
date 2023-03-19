@@ -46,6 +46,8 @@ export const rootStore = proxy({
 
 const recentChronoNotes = memoize<typeof rootStore, FileNode[]>((snap) => {
     const today = dayjs(new Date())
+    // TODO: this would be wayyyyy faster if I traverse the filetree instead of iterating over all files
+    //  I was just being lazy...
     return Object.entries(snap.stores.fileStore.files)
         .filter(it => {
             /** short circuit */
