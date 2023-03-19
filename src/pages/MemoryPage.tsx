@@ -10,6 +10,7 @@ import remarkGfm from "remark-gfm";
 export function MemoryPage() {
     const s = useSnapshot(rootStore)
     const contents = useAsync(s.recentChronoNotesWithContent, [s.recentChronoNotes])
+
     return <Container>
         <If when={contents.loading}><Center><Loader size="xl"/></Center></If>
         <Stack>

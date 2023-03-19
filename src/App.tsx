@@ -14,8 +14,7 @@ import {
     Title,
     useMantineTheme
 } from "@mantine/core";
-import {NavLink, Outlet, useLoaderData, useNavigate} from "react-router-dom";
-import {rootLoader} from "./router";
+import {NavLink, Outlet, useNavigate} from "react-router-dom";
 import {If} from "./widgets/react-utils";
 import {DirNode, fileStore, init, setSelectedFile} from "./state/fileStore";
 import {TreeNode} from "./widgets/TreeNode";
@@ -23,7 +22,7 @@ import {useSnapshot} from "valtio";
 import {IconBrain, IconClock, IconHome, IconSettings} from "@tabler/icons-react";
 
 function App() {
-    const routeData = useLoaderData() as Awaited<ReturnType<typeof rootLoader>> | undefined
+    // const routeData = useLoaderData() as Awaited<ReturnType<typeof rootLoader>> | undefined
     const navigate = useNavigate();
 
     const [opened, setOpened] = useState(false)
@@ -45,7 +44,7 @@ function App() {
                 sx={{height: "calc(100vh - var(--mantine-header-height, 0rem) - var(--mantine-footer-height, 0rem)) - 1px"}}
                 p="md"
                 hiddenBreakpoint="sm"
-                width={{base: 200, sm: 200, lg: 300}}
+                width={{base: 200, sm: 300, lg: 300}}
             >
                 <Navbar.Section mt="xs">
                     <Group pb={"md"}>

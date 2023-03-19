@@ -20,9 +20,12 @@ specifiers:
   '@types/wicg-file-system-access': ^2020.9.5
   '@vitejs/plugin-react-swc': ^3.0.0
   '@vitest/coverage-c8': ^0.29.2
+  date-fns: ^2.29.3
   dayjs: ^1.11.7
+  proxy-memoize: ^2.0.2
   react: ^18.2.0
   react-dom: ^18.2.0
+  react-error-boundary: ^3.1.4
   react-json-tree: ^0.18.0
   react-markdown: ^8.0.5
   react-router-dom: ^6.9.0
@@ -49,9 +52,12 @@ dependencies:
   '@tiptap/pm': 2.0.0-beta.220_7w7m52asdh3tod4ocz57yex63q
   '@tiptap/react': 2.0.0-beta.220_xig6hpp4glylmgjqbtp4uwsv5e
   '@tiptap/starter-kit': 2.0.0-beta.220_@tiptap+pm@2.0.0-beta.220
+  date-fns: 2.29.3
   dayjs: 1.11.7
+  proxy-memoize: 2.0.2
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
+  react-error-boundary: 3.1.4_react@18.2.0
   react-json-tree: 0.18.0_pmekkgnqduwlme35zpnqhenc34
   react-markdown: 8.0.5_pmekkgnqduwlme35zpnqhenc34
   react-router-dom: 6.9.0_biqbaboplfbrettd7655fr4n2y
@@ -1568,6 +1574,11 @@ packages:
     resolution: {integrity: sha512-4FbVrHDwfOASx7uQVxeiCTo7ggSdYZbqs8lH+WU6ViypPlDbe9y6IP5VVUDQBv9DcnyaiPT5XT0UWHgJ64zLeQ==}
     dev: false
 
+  /date-fns/2.29.3:
+    resolution: {integrity: sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==}
+    engines: {node: '>=0.11'}
+    dev: false
+
   /dayjs/1.11.7:
     resolution: {integrity: sha512-+Yw9U6YO5TQohxLcIkrXBeY73WP3ejHWVvx8XCk3gxvQDCTEmS48ZrSZCKciI7Bhl/uCMyxYtE9UqRILmFphkQ==}
     dev: false
@@ -2744,8 +2755,18 @@ packages:
       prosemirror-transform: 1.7.1
     dev: false
 
+  /proxy-compare/2.4.0:
+    resolution: {integrity: sha512-FD8KmQUQD6Mfpd0hywCOzcon/dbkFP8XBd9F1ycbKtvVsfv6TsFUKJ2eC0Iz2y+KzlkdT1Z8SY6ZSgm07zOyqg==}
+    dev: false
+
   /proxy-compare/2.5.0:
     resolution: {integrity: sha512-f1us0OsVAJ3tdIMXGQx2lmseYS4YXe4W+sKF5g5ww/jV+5ogMadPt+sIZ+88Ga9kvMJsrRNWzCrKPpr6pMWYbA==}
+    dev: false
+
+  /proxy-memoize/2.0.2:
+    resolution: {integrity: sha512-g0nfJQ048mAGixyBt2urDN7vLaYMm+wlhju35kNrxEuJ49UjQsyMpr4qA9O5iR2xuGmzVDa3xH5tHds1t8vR7w==}
+    dependencies:
+      proxy-compare: 2.4.0
     dev: false
 
   /react-base16-styling/0.9.1:
@@ -2768,6 +2789,16 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
+    dev: false
+
+  /react-error-boundary/3.1.4_react@18.2.0:
+    resolution: {integrity: sha512-uM9uPzZJTF6wRQORmSrvOIgt4lJ9MC1sNgEOj2XGsDTRE4kmpWxg7ENK9EWNKJRMAOY9z0MuF4yIfl6gp4sotA==}
+    engines: {node: '>=10', npm: '>=6'}
+    peerDependencies:
+      react: '>=16.13.1'
+    dependencies:
+      '@babel/runtime': 7.21.0
+      react: 18.2.0
     dev: false
 
   /react-is/16.13.1:
