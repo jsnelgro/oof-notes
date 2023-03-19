@@ -33,10 +33,10 @@ export const router = createHashRouter([
                 element: <MemoryPage/>
             },
             {
-                path: "/files/:filepath",
+                path: "/files/*",
                 element: <SingleFilePage/>,
                 loader: async (args) => {
-                    return {filepath: args.params.filepath}
+                    return {filepath: args.params["*"]}
                 },
                 action: submitAction,
             },

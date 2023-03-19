@@ -2,6 +2,13 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import isToday from "dayjs/plugin/isToday";
 
+// NOTE: types don't matter here since the signature is defined globally in interfaces.d.ts
+Object.defineProperty(Object.prototype, 'let', {
+    value: function (fn: (me: any) => any) {
+        return fn(this)
+    }
+})
+
 /**
  * This lib's weird and plugins are applied globally somehow... so need to call it at top level of app
  */
