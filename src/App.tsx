@@ -14,7 +14,7 @@ import {
     Title,
     useMantineTheme
 } from "@mantine/core";
-import {NavLink, Outlet, useLoaderData} from "react-router-dom";
+import {NavLink, Outlet, useLoaderData, useNavigate} from "react-router-dom";
 import {rootLoader} from "./router";
 import {If} from "./widgets/react-utils";
 import {DirNode, fileStore, init, setSelectedFile} from "./state/fileStore";
@@ -24,6 +24,8 @@ import {IconBrain, IconClock, IconHome, IconSettings} from "@tabler/icons-react"
 
 function App() {
     const routeData = useLoaderData() as Awaited<ReturnType<typeof rootLoader>> | undefined
+    const navigate = useNavigate();
+
     const [opened, setOpened] = useState(false)
     const theme = useMantineTheme();
     const store = useSnapshot(fileStore)
@@ -46,7 +48,7 @@ function App() {
                 width={{base: 200, sm: 200, lg: 300}}
             >
                 <Navbar.Section mt="xs">
-                    <Group>
+                    <Group pb={"md"}>
                         <UINavLink label="Home" to="/" component={NavLink}
                                    icon={<IconHome/>}
                                    onClick={() => setOpened(false)}></UINavLink>
@@ -70,7 +72,10 @@ function App() {
                                       onClick={(n, actions) => {
                                           actions.toggleExpanded()
                                           setSelectedFile(n.path)
-                                          n.kind === "file" && setOpened(false)
+                                          if (n.kind === "file") {
+                                              setOpened(false)
+                                              navigate(`/files/${n.path}`)
+                                          }
                                       }}
                                       selectedPaths={new Set([store.selectedFilePath])}
                             />
@@ -79,7 +84,7 @@ function App() {
                 </Navbar.Section>
                 <Navbar.Section>
                     <Divider/>
-                    <Group position={"apart"}>
+                    <Group>
                         <UINavLink label="Settings" to="/settings" component={NavLink}
                                    icon={<IconSettings/>}
                                    onClick={() => setOpened(false)}></UINavLink>

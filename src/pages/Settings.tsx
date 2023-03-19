@@ -41,7 +41,6 @@ export function SettingsPage() {
     return (
         <Container className={styles.classes.root}>
             <Title order={1}>Settings</Title>
-            <Text>TODO: make a <i className="my-eye">settings page...</i></Text>
             <Input {...bind(s.chronoNotesDirectory, SettingsStore.setChronoNotesDirectory)} />
             <NumberInput type="number"
                    value={settingsStore.rollingViewLookbackDays}

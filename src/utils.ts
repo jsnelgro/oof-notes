@@ -1,3 +1,15 @@
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import isToday from "dayjs/plugin/isToday";
+
+/**
+ * This lib's weird and plugins are applied globally somehow... so need to call it at top level of app
+ */
+export const configureGlobalDayJs = () => {
+    dayjs.extend(relativeTime);
+    dayjs.extend(isToday);
+}
+
 export const uuid = (t = 21) => crypto
     .getRandomValues(new Uint8Array(t))
     .reduce(((t, e) => {
