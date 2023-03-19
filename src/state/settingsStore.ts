@@ -6,7 +6,7 @@ export const settingsStore = proxy({
     colorSchemeMode: "auto" as ColorSchemeModes,
     chronoNotesDirectory: "",
     // stupid noteplan format...
-    dailyNotePattern: "yyyymmdd",
+    dailyNotePattern: "yyyyMMdd",
     fileType: "md",
     rollingViewLookbackDays: 7,
 })

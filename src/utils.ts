@@ -29,7 +29,7 @@ export async function wait(ms: number) {
 
 // util types
 
-type Path = ReturnType<typeof toPath>
+export type FilePath = ReturnType<typeof toPath>
 export const toPath = (str: string) => {
     const components = str.split("/").filter(it => it.trim().length > 0)
     const filenameWithExt = components[components.length - 1] ?? ""
@@ -43,6 +43,6 @@ export const toPath = (str: string) => {
     }
 }
 
-export const toPathString = (p: Path): string => {
+export const toPathString = (p: FilePath): string => {
     return p.components.join("/")
 }

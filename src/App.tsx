@@ -20,6 +20,7 @@ import {DirNode, fileStore, init, setSelectedFile} from "./state/fileStore";
 import {TreeNode} from "./widgets/TreeNode";
 import {useSnapshot} from "valtio";
 import {IconBrain, IconClock, IconHome, IconSettings} from "@tabler/icons-react";
+import {rootStore} from "./state/rootStore";
 
 function App() {
     // const routeData = useLoaderData() as Awaited<ReturnType<typeof rootLoader>> | undefined
@@ -51,7 +52,7 @@ function App() {
                         <UINavLink label="Home" to="/" component={NavLink}
                                    icon={<IconHome/>}
                                    onClick={() => setOpened(false)}></UINavLink>
-                        <UINavLink label="Today" to={`/files/${"TODO"}`} component={NavLink}
+                        <UINavLink label="Today" to={`/files/${rootStore.todaysNotePath}`} component={NavLink}
                                    icon={<IconClock/>}
                                    onClick={() => setOpened(false)}></UINavLink>
                         <UINavLink label="Memory" to="/memory" component={NavLink}

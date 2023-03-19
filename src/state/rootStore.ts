@@ -2,9 +2,9 @@ import {fetchFileContentByPath, FileNode, fileStore} from "./fileStore";
 import {settingsStore} from "./settingsStore";
 import {proxy, snapshot} from "valtio";
 import dayjs, {Dayjs} from "dayjs";
-import {toPath} from "../utils";
+import {toPath, toPathString} from "../utils";
 import {sortBy} from "remeda";
-import isMatch from 'date-fns/isMatch'
+import {format, isMatch} from 'date-fns'
 import {memoize} from "proxy-memoize";
 
 // TODO: how do I enforce this type on sub-stores while keeping the specificity of the store types?
@@ -22,16 +22,16 @@ export const rootStore = proxy({
         settingsStore,
     },
     get recentChronoNotes(): FileNode[] {
-        const x = snapshot(rootStore)
-        // @ts-ignore
-        const p = lks(x)
-        return p
+        // @ts-ignore ts is getting annoyed with subtle diffs in snapshot vs store type
+        return recentChronoNotes(snapshot(rootStore))
     },
-    // get todaysNotePath(): string {
-    //     const todayfmtted = dayjs(new Date()).format(settingsStore.dailyNotePattern)
-    //     return todayfmtted
-    //
-    // },
+    get todaysNotePath(): string {
+        const filename = format(new Date(), settingsStore.dailyNotePattern)
+        return toPathString(toPath(
+            `${settingsStore.chronoNotesDirectory}/${filename}.${settingsStore.fileType}`
+        ))
+
+    },
     async recentChronoNotesWithContent(): Promise<ContentfulChronoNode[]> {
         const res = await Promise.all(rootStore.recentChronoNotes.map(async it => {
             const content = await fetchFileContentByPath(it.path) ?? ""
@@ -44,7 +44,7 @@ export const rootStore = proxy({
     }
 })
 
-const lks = memoize<typeof rootStore, FileNode[]>((snap) => {
+const recentChronoNotes = memoize<typeof rootStore, FileNode[]>((snap) => {
     const today = dayjs(new Date())
     return Object.entries(snap.stores.fileStore.files)
         .filter(it => {
